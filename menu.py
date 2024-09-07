@@ -204,10 +204,21 @@ def set_config_legit():
     dpg.set_value("delay", f"Between {config.initial_num:.4f} and {config.last_num:.4f}")
     dpg.set_value("shoot_hotkey", f"Shoot Hotkey: {config.shoot_key}")
 
+with dpg.theme() as container_theme:
+
+    with dpg.theme_component(dpg.mvAll):
+        dpg.add_theme_color(dpg.mvThemeCol_FrameBg, (150, 100, 100), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 5, category=dpg.mvThemeCat_Core)
+
+    with dpg.theme_component(dpg.mvInputInt):
+        dpg.add_theme_color(dpg.mvThemeCol_FrameBg, (100, 150, 100), category=dpg.mvThemeCat_Core)
+        dpg.add_theme_style(dpg.mvStyleVar_FrameRounding, 5, category=dpg.mvThemeCat_Core)
+
+
 def run():
     global viewport, window_hidden, width, height, slider1, slider2, win, login_window, slider3, hwnd, ZONE, click_through, alreadykey
-    width = 400
-    height = 500
+    width = 600
+    height = 700
     context = dpg.create_context()
     viewport = dpg.create_viewport(title='steam', always_on_top=True, decorated=False, clear_color=[0.0, 0.0, 0.0, 0.0], resizable=False, disable_close=True)
     threading.Thread(target=change_title, daemon=True).start()
@@ -272,7 +283,7 @@ def run():
 
     while dpg.is_dearpygui_running():
         dpg.render_dearpygui_frame()
-        if keyboard.is_pressed('insert'):
+        if keyboard.is_pressed('insert' or 'end'):
             click_through = not click_through
             dpg.configure_item(item=alreadykey, show=False)
             time.sleep(0.1)
