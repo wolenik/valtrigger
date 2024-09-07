@@ -216,13 +216,13 @@ def run():
     dpg.setup_dearpygui()
     dpg.add_viewport_drawlist(front=False, tag="FOV")
     window_hidden = False
-    with dpg.window(label="Ethan's menu", width=width, height=height, no_collapse=True, no_resize=True, on_close=exit) as login_window:
-        dpg.add_text("Enter your license:")
-        dpg.add_input_text(tag="##license_input", width=200)
-        with dpg.group(horizontal=True):    
-            dpg.add_button(label="Login", callback=login_callback)
-            dpg.add_button(label="Exit", callback=lambda: exit)  
-        dpg.add_text(tag="##status_text", label="", color=(255, 255, 255))
+    # with dpg.window(label="Ethan's menu", width=width, height=height, no_collapse=True, no_resize=True, on_close=exit) as login_window:
+    #     dpg.add_text("Enter your license:")
+    #     dpg.add_input_text(tag="##license_input", width=200)
+    #     with dpg.group(horizontal=True):    
+    #         dpg.add_button(label="Login", callback=login_callback)
+    #         dpg.add_button(label="Exit", callback=lambda: exit)  
+    #     dpg.add_text(tag="##status_text", label="", color=(255, 255, 255))
         
     with dpg.window(label="Ethan's menu", width=width, height=height, no_collapse=True, no_resize=True, on_close=exit, show=False) as win:
         dpg.add_slider_int(label="Target FPS", default_value=config.target_fps, min_value=60, max_value=240, tag="##target_fps_slider", callback=lambda sender: update_config(sender, 'target_fps'))
