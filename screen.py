@@ -1,5 +1,5 @@
 import sys
-sys.path.append("./DLL/")
+sys.path.append("./dll/")
 import time
 import keyboard
 import pydxshot

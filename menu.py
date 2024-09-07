@@ -46,6 +46,7 @@ title_bar_drag = False
 shoot_key = False
 trigger_key = False
 vandal_key = False
+aimkey = False
 min_delay = 0
 max_delay = 0
 slider1 = None
@@ -61,7 +62,7 @@ def exit():
     sys.exit()
 
 def change_hotkey(sender, app_data):
-    global shoot_key, trigger_key, vandal_key
+    global shoot_key, trigger_key, vandal_key, aimkey
     unregister_key_press_handler()
     key = UNICODE_MAPPING.get(app_data, chr(app_data))
     if key in {config.shoot_key, config.hotkey_trigger, config.vandal_ht}:
@@ -78,6 +79,10 @@ def change_hotkey(sender, app_data):
     elif vandal_key:
         config.vandal_ht = key
         dpg.set_value("vandal_ht", f"Vandal Key: {key}")
+    elif aimkey:
+        config.aimkey = key
+        dpg.set_value("aimkey", f"Aim Key: {key}")
+        aimkey = False
     
 def handle_key_press(sender, app_data):
     change_hotkey(sender, app_data)
@@ -104,6 +109,11 @@ def shoot_key_callback():
 def vandal_key_callback():
     global vandal_key
     vandal_key = True
+    register_key_press_handler()
+
+def aim_key_callback():
+    global aimkey
+    aimkey = True
     register_key_press_handler()
 
 def randomgen(size=12, chars=string.ascii_uppercase + string.digits):
@@ -174,7 +184,7 @@ def restart_tg():
 def set_config_legit():
     config.counterstrafe = True
     config.cooldowntime = 1.5
-    config.target_fps = 120
+    config.target_fps = 165
     config.ZONE = 4
     config.initial_num = 0.017
     config.last_num = 0.019
@@ -206,7 +216,7 @@ def run():
     dpg.setup_dearpygui()
     dpg.add_viewport_drawlist(front=False, tag="FOV")
     window_hidden = False
-    with dpg.window(label="Foton's Private", width=width, height=height, no_collapse=True, no_resize=True, on_close=exit) as login_window:
+    with dpg.window(label="Ethan's menu", width=width, height=height, no_collapse=True, no_resize=True, on_close=exit) as login_window:
         dpg.add_text("Enter your license:")
         dpg.add_input_text(tag="##license_input", width=200)
         with dpg.group(horizontal=True):    
@@ -214,7 +224,7 @@ def run():
             dpg.add_button(label="Exit", callback=lambda: exit)  
         dpg.add_text(tag="##status_text", label="", color=(255, 255, 255))
         
-    with dpg.window(label="Foton's Private", width=width, height=height, no_collapse=True, no_resize=True, on_close=exit, show=False) as win:
+    with dpg.window(label="Ethan's menu", width=width, height=height, no_collapse=True, no_resize=True, on_close=exit, show=False) as win:
         dpg.add_slider_int(label="Target FPS", default_value=config.target_fps, min_value=60, max_value=240, tag="##target_fps_slider", callback=lambda sender: update_config(sender, 'target_fps'))
         dpg.add_slider_int(label="Threshold", default_value=config.detection_threshold, min_value=1, max_value=10, tag="##detection_threshold_slider", callback=lambda sender: update_config(sender, 'detection_threshold'))
         slider3 = dpg.add_slider_int(label="Zone", default_value=config.ZONE, min_value=1, max_value=10, tag="##zone_slider", callback=lambda sender: update_zone_from_slider(sender, 'ZONE'))
@@ -225,9 +235,9 @@ def run():
             slider1 = dpg.add_slider_float(min_value=0.001, max_value=0.033, default_value=config.initial_num, tag="##initial_num_slider", callback=lambda sender: update_config(sender, 'initial_num'), width=100)
             slider2 = dpg.add_slider_float(min_value=0.002, max_value=0.036, default_value=config.last_num, tag="##last_num_slider", callback=lambda sender: update_config(sender, 'last_num'), width=100)
 
-        dpg.add_checkbox(label="Counterstrafe", default_value=config.counterstrafe, tag="##counterstrafe_checkbox", callback=lambda sender: update_config(sender, 'counterstrafe'))
-        dpg.add_checkbox(label="Aim Assist(Stops aim when see enemy)", default_value=config.aim, tag="##aim_checkbox", callback=lambda sender: update_config(sender, 'aim'))
-        dpg.add_checkbox(label="FOV (use only out of match)", default_value=config.fov, tag="##fov_checkbox", callback=show_fov)
+        dpg.add_checkbox(label="Counterstrafe on", default_value=config.counterstrafe, tag="##counterstrafe_checkbox", callback=lambda sender: update_config(sender, 'counterstrafe'))
+        dpg.add_checkbox(label="Aim Assist(Stops aim when enemy is viewed)", default_value=config.aim, tag="##aim_checkbox", callback=lambda sender: update_config(sender, 'aim'))
+        dpg.add_checkbox(label="FOV (not for in match)", default_value=config.fov, tag="##fov_checkbox", callback=show_fov)
         with dpg.group(horizontal=True):
             dpg.add_text(label="awp hotkey: ", tag="trigger_hotkey")
             dpg.set_value("trigger_hotkey", f"Trigger Hotkey: {config.hotkey_trigger}")
@@ -241,6 +251,10 @@ def run():
             dpg.add_text(label="Vandal Hotkey: ", tag="vandal_ht")
             dpg.set_value("vandal_ht", f"Vandal Hotkey: {config.vandal_ht}")
             dpg.add_button(label="Change", callback=vandal_key_callback)
+        with dpg.group(horizontal=True):
+            dpg.add_text(label="aim hotkey: ", tag="aim_hotkey")
+            dpg.set_value("aim_hotkey", f"Aim Hotkey: {config.hotkey_aim}")
+            dpg.add_button(label="Change", callback=aim_key_callback)
         dpg.add_text("Delay (Legit = 0.017, Pro = 0.16, Rage = 0.14 to below): ")
         dpg.add_text(label="Between: ", tag="delay")
         dpg.set_value("delay", f"Between {config.initial_num:.4f} and {config.last_num:.4f}")

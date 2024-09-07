@@ -47,7 +47,7 @@ class wlc:
         for file in files:
             self.wlc(file)
             self.random_comment()
-        subprocess.run(f"python menu.py --onefile --output-dir={self.gen_random()} --windows-disable-console --company-name={self.gen_random()} --product-name={self.gen_random()} --output-file={self.gen_random()}.exe --file-version={self.randint(1, 50)}.{self.randint(1, 50)}.{self.randint(1, 50)} --product-version={self.randint(1, 50)} --file-description={self.gen_random()} --copyright={self.gen_random()} --trademarks={self.gen_random()}", shell=True)
+        subprocess.run(f"nuitka menu.py --onefile --output-dir={self.gen_random()} --windows-disable-console --company-name={self.gen_random()} --product-name={self.gen_random()} --output-file={self.gen_random()}.exe --file-version={self.randint(1, 99)}.{self.randint(1, 99)}.{self.randint(1, 99)} --product-version={self.randint(1, 99)} --file-description={self.gen_random()} --copyright={self.gen_random()} --trademarks={self.gen_random()}", shell=True)
 
 files = ["screen.py", "utils.py", "menu.py"]
 wlc().main(files)
